@@ -17,16 +17,16 @@ namespace Parcial.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<ActionResult> GetAsync()
         {
             return Ok( await _context.Entrances.ToListAsync());
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<ActionResult> Get(int id)
         {
             var entrance = await _context.Entrances.FirstOrDefaultAsync(X => X.Id == id);
-            if (entrance == null)
+            if (entrance is null)
             {
                 return NotFound();
             }
@@ -51,17 +51,35 @@ namespace Parcial.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var entrance = await _context.Entrances.FirstOrDefaultAsync(X => X.Id == id);
-            if (entrance == null)
+            var afectedRows = await _context.Entrances
+            .Where(x => x.Id == id)
+            .ExecuteDeleteAsync();
+
+
+
+            if (afectedRows == 0)
             {
                 return NotFound();
             }
-            _context.Remove(entrance);
-            await _context.SaveChangesAsync();
+
+
+
             return NoContent();
         }
+        //[HttpDelete("{id:int}")]
+        //public async Task<ActionResult> Delete(int id)
+        //{
+        //var entrance = await _context.Entrances.FirstOrDefaultAsync(X => X.Id == id);
+        //   if (entrance == null)
+        //   {
+        //       return NotFound();
+        //   }
+        //_context.Remove(entrance);
+        // await _context.SaveChangesAsync();
+        //   return NoContent();
+        //}
     }
 }
 

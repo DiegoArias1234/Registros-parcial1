@@ -2,10 +2,10 @@
 @inject IRepository repository
 
 <h3>Registro</h3>
+
+<a class="btn btn-primary mb-3" href="/entrances/create">Nuevo Ingreso</a>
+
 <GenericList MyList="Entrances">
-    <Loading>
-        <p>Cargando...</p>
-    </Loading>
     <Body>
          <table class="table table-striped">
         <thead>
@@ -19,7 +19,7 @@
             {
                 <tr>
                     <td>
-                        <a class="btn btn-warning">Editar</a>
+                            <a class="btn btn-warning" href="/entrances/edit/@entrance.Id">Editar</a>
                         <button class="btn btn-danger">Borrar</button>
                     </td>
                     <td>

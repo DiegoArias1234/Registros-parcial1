@@ -1,0 +1,33 @@
+﻿@page "/entrances/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+
+<h3>Nueva Entrada</h3>
+
+<EntranceForm @ref="entranceForm" Entrance="entrance" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Entrance entrance = new();
+    private EntranceForm? entranceForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/entrances", entrance);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        entranceForm!.FormPostedSuccesFully = true;
+        navigationManager.NavigateTo("/entrances");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/entrances");
+    }
+}
+
