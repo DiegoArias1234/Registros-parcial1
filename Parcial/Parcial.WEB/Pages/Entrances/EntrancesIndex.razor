@@ -1,0 +1,47 @@
+﻿@page "/entrances"
+@inject IRepository repository
+
+<h3>Registro</h3>
+<GenericList MyList="Entrances">
+    <Loading>
+        <p>Cargando...</p>
+    </Loading>
+    <Body>
+         <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Boleta</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entrance in Entrances!)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-warning">Editar</a>
+                        <button class="btn btn-danger">Borrar</button>
+                    </td>
+                    <td>
+                        @entrance.Id
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </Body>
+</GenericList>
+
+
+
+@code {
+    public List<Entrance>? Entrances { get; set; }
+
+    protected async  override Task OnInitializedAsync()
+    {
+        var responseHttp = await repository.Get<List<Entrance>>("/api/entrances");
+        Entrances = responseHttp.Response!;
+
+    }
+
+}
